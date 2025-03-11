@@ -1,0 +1,68 @@
+
+
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+body{
+  background-color: #f9fafb;
+}
+
+.Blackdiv-But{
+  padding: 5px 15px;
+  border: 1px solid white;
+  transition: 0.5s all ease;
+}
+.Blackdiv-But:hover{
+  color: black;
+  background: white;
+}
+.Hero-button{
+  padding: 10px 0px ;
+  width: 200px;
+  transition: 1s ease all;
+  color: white;
+  background-color: #0056d2;
+  border-radius: 3px;
+  font-family: sans-serif;
+  font-size: 16px;
+}
+.Hero-button:hover{
+  background-color: #174e9a;
+}
+.Hero-button2{
+  padding: 10px 0px ;
+  width: 200px;
+  transition: 1s ease all;
+  color: 0056d2;
+  background-color: white;
+  border-radius: 3px;
+  font-family: sans-serif;
+  font-size: 16px;
+  border: 1px solid #0056d2;
+}
+.Hero-button2:hover{
+  background-color: #0056d2;
+}
+
+.prof{
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+.fancy{
+  font-family:cursive;
+}
+
+
+@media (max-width: 768px) {
+  .Hero-button {
+    width: 100%;
+  }
+  .Hero-button2{
+    width: 100%;
+  }
+}
