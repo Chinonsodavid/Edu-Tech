@@ -1,5 +1,4 @@
 import React from "react";
-// import Footer from "./Footer";
 
 function Homepage() {
   return (
@@ -19,14 +18,14 @@ function Homepage() {
         </div>
 
         <img
-          src="/img/pic.gif" // Ensure the path is correct
+          src="/img/pic.gif" 
           alt="Animated Hero"
           className=" w-full max-w-[500px] md:max-w-[500px]"
         />
       </div>
       <div className="pt-9 px-14 flex flex-col min-h-[400px] gap-16 max-sm:flex justify-center items-center">
         <div>
-          <p className="text-3xl overflow-y-hidden font-medium max-sm:text-[27px]  ">Learn Courses For Free</p>
+          <p className="text-3xl overflow-y-hidden font-medium max-sm:text-[27px]">Learn Courses For Free</p>
         </div>
 
         <div className="w-full grid grid-cols-4 gap-4 max-[414px]:grid-cols-1 mb-8">
@@ -78,7 +77,7 @@ function Homepage() {
         </div>
 
         <img
-          src="\img\Learning-cuate.png" // Ensure the path is correct
+          src="\img\Learning-cuate.png"
           alt="Animated Hero"
           className=" w-full max-w-[500px] md:max-w-[450px]"
         />

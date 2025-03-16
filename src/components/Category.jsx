@@ -2,9 +2,9 @@ import { useState, useEffect } from "react";
 import { FaThumbsUp } from "react-icons/fa";
 import { getAuth } from "firebase/auth";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
-import { db } from "../firebase"; // Adjust path based on your setup
+import { db } from "../firebase"; 
 
-const API_KEY = import.meta.env.VITE_YOUTUBE_API_KEY; // Store securely in .env
+const API_KEY = import.meta.env.VITE_YOUTUBE_API_KEY; 
 
 const categories = {
   "All Videos": "advance educational videos",
@@ -96,7 +96,7 @@ export default function CategoryPage() {
   return (
     <div className="py-16 pt-48 max-w-6xl mx-auto px-4">
       {/* Page Title */}
-      <h1 className="text-4xl font-medium text-gray-900 text-center mb-16">
+      <h1 className="text-4xl font-medium text-gray-900 text-center mb-16 overflow-hidden">
         Explore Educational Videos
       </h1>
 

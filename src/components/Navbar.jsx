@@ -35,7 +35,7 @@ export default function Navbar() {
           <div className="flex items-center space-x-4">
             {/* Profile Icon */}
             <Link to="Profile">
-              <button className="text-[#1f2937] hover:text-[#2563eb] transition">
+              <button className="text-[#1f2937] hover:text-[#2563eb] transition mt-1">
                 <User size={23} />
               </button>
             </Link>

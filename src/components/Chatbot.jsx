@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { toast } from "react-toastify";
 import { FaPaperPlane, FaRobot, FaTimes, FaComments } from "react-icons/fa";
+import axios from "axios"; // Import axios
 
 const Chatbot = () => {
     const [messages, setMessages] = useState([]);
@@ -9,42 +10,43 @@ const Chatbot = () => {
     const [isOpen, setIsOpen] = useState(false);
     const chatRef = useRef(null);
 
-    useEffect(() => {
-        chatRef.current?.scrollIntoView({ behavior: "smooth" });
-    }, [messages]);
-
+    const API_URL = "https://openrouter.ai/api/v1/chat/completions";
+    const API_KEY = import.meta.env.VITE_OPENROUTER_API_KEY;
+    
     const sendMessage = async () => {
         if (!input.trim()) return;
-        const userMessage = { role: "user", content: input };
-        setMessages((prev) => [...prev, userMessage]);
+        setMessages((prev) => [...prev, { role: "user", content: input }]);
         setInput("");
         setLoading(true);
     
         try {
-            const response = await fetch("https://edu-videos.vercel.app/api/chatbot", {
+            const response = await fetch(API_URL, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ message: input }),
+                headers: {
+                    "Authorization": `Bearer ${API_KEY}`,
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    model: "openai/gpt-3.5-turbo",
+                    messages: [{ role: "user", content: input }],
+                }),
             });
     
-            const data = await response.json();
-            console.log("Chatbot Response:", data); // Debugging log
+            if (!response.ok) throw new Error("Failed to fetch response");
     
-            if (response.ok) {
-                const botMessage = { role: "assistant", content: data.reply };
-                setMessages((prev) => [...prev, botMessage]);
-            } else {
-                toast.error(data.error || "Something went wrong");
-            }
+            const data = await response.json();
+            const botMessage = data.choices[0]?.message?.content || "No response from AI.";
+    
+            setMessages((prev) => [...prev, { role: "assistant", content: botMessage }]);
         } catch (error) {
             console.error("Chatbot API Error:", error);
-            toast.error("Failed to connect to chatbot");
+            toast.error("Failed to connect to chatbot. Check API key & model.");
         }
     
         setLoading(false);
     };
     
-
+    
     return (
         <div className="fixed bottom-6 right-6">
             {!isOpen ? (
@@ -56,7 +58,6 @@ const Chatbot = () => {
                 </button>
             ) : (
                 <div className="w-80 h-96 bg-white shadow-2xl rounded-lg border border-gray-300 flex flex-col">
-                    {/* Header */}
                     <div className="bg-blue-600 text-white p-3 flex justify-between items-center rounded-t-lg">
                         <div className="flex items-center space-x-2">
                             <FaRobot size={20} />
@@ -70,7 +71,6 @@ const Chatbot = () => {
                         </button>
                     </div>
 
-                    {/* Chat Messages */}
                     <div className="flex-1 overflow-y-auto p-3 space-y-2">
                         {messages.map((msg, index) => (
                             <div 
@@ -84,7 +84,6 @@ const Chatbot = () => {
                         <div ref={chatRef} />
                     </div>
 
-                    {/* Input Field */}
                     <div className="border-t p-2 flex items-center">
                         <input 
                             type="text"

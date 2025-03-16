@@ -41,7 +41,7 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="max-w-5xl mx-auto p-12 bg-white shadow-lg rounded-lg grid md:grid-cols-2 gap-6 mt-44">
+    <div className="max-w-5xl mx-auto p-12 bg-white shadow-lg rounded-lg grid md:grid-cols-2 gap-6 mt-44 max-sm:px-6">
       {/* Left Side - Contact Details */}
       <div className="space-y-6">
         <h2 className="text-3xl font-medium text-gray-800 overflow-hidden">Get in Touch</h2>
@@ -60,7 +60,7 @@ export default function ContactPage() {
       </div>
 
       {/* Right Side - Contact Form */}
-      <div className="bg-gray-100 p-6 rounded-lg">
+      <div className="bg-gray-100 p-6 rounded-lg max-sm:p-3">
         <form onSubmit={handleSubmit} className="space-y-4">
           <input
             type="text"

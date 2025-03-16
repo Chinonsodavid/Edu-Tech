@@ -41,7 +41,6 @@ function Footer2() {
         </div>
 
         <div className="w-full flex flex-col">
-          {/* <p>&copy; {new Date().getFullYear()} EduTech. All Rights Reserved.</p> */}
           <p className=" font-medium text-[black] font-inter tracking-tight">
             123 EduTech Street, Learning City, LT 45678
           </p>

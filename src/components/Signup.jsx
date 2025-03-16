@@ -22,16 +22,14 @@ const Signup = () => {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
   
-      // Update the user's display name
       await updateProfile(user, {
         displayName: name,
       });
   
-      // Send email verification
       await sendEmailVerification(user);
       toast.success("Account created! Please check your email for verification.");
       
-      navigate("/login"); // Redirect to login after signup
+      navigate("/login");
     } catch (err) {
       toast.error(err.message);
     }
