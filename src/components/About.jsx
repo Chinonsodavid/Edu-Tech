@@ -4,7 +4,7 @@ function About() {
     <>
       <div>
         <div className="pt-60 ">
-          <h1 className="text-center text-5xl font-medium text-[black] font-inter tracking-tight max-sm:font-normal">
+          <h1 className="text-center text-5xl font-medium text-[black] font-inter tracking-tight max-sm:font-normal overflow-hidden">
             About Edutech
           </h1>
         </div>

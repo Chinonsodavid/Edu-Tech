@@ -18,12 +18,14 @@ import ContactPage from "./components/ContactPage";
 import Chatbot from "./components/Chatbot";
 import CategoryPage from "./components/Category";
 import ProfilePage from "./components/Profile";
+import ScrollToTop from "./components/ScrollToTop"
 
 function App() {
   return (
     <>
       <ToastContainer position="top-center" autoClose={3000} />
       <Router>
+      <ScrollToTop />
         <MainLayout />
         <Chatbot />
       </Router>
