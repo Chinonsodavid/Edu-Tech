@@ -13,29 +13,30 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
-
+  
     try {
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
-
+  
       if (!user.emailVerified) {
         toast.error("Please verify your email before logging in.");
         setLoading(false);
         return;
       }
-
+  
+      // Save token to local storage
+      localStorage.setItem("authToken", user.accessToken); 
+      localStorage.setItem("userEmail", user.email); 
+  
       toast.success("Login successful! 🎉");
       navigate("/home"); // Redirect after successful login
     } catch (err) {
       toast.error(err.message);
     }
-
+  
     setLoading(false);
   };
+  
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-[#f0f6ff] p-2">

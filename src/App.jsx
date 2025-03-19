@@ -16,8 +16,8 @@ import Login from "./components/Login";
 import Signup from "./components/Signup";
 import ContactPage from "./components/ContactPage";
 import Chatbot from "./components/Chatbot";
-import CategoryPage from "./components/Category";
 import ProfilePage from "./components/Profile";
+import CategoryPage from "./components/Category";
 import ScrollToTop from "./components/ScrollToTop"
 
 function App() {

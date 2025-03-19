@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
-import { db } from "../firebase"; 
+import { db } from "../firebase";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import VideoCard from "./VideoCard";
 
 const ProfilePage = () => {
   const [user, setUser] = useState(null);
@@ -18,8 +19,9 @@ const ProfilePage = () => {
       if (currentUser) {
         setUser({ name: currentUser.displayName, uid: currentUser.uid });
         fetchWatchHistory(currentUser.uid);
+      } else {
+        setLoading(false);
       }
-      setLoading(false);
     });
 
     return () => unsubscribe();
@@ -29,23 +31,30 @@ const ProfilePage = () => {
     try {
       const historyRef = collection(db, "users", uid, "history");
       const historySnapshot = await getDocs(historyRef);
-      const historyData = historySnapshot.docs.map(doc => ({
+      const historyData = historySnapshot.docs.map((doc) => ({
         id: doc.id,
-        ...doc.data()
+        ...doc.data(),
       }));
+
+      console.log("Fetched History:", historyData); // Debugging log
+
       setHistory(historyData);
     } catch (error) {
       console.error("Error fetching history:", error);
       toast.error("Failed to load watch history.");
+    } finally {
+      setLoading(false);
     }
   };
 
   const clearHistory = async () => {
+    if (!user) return;
+
     try {
       const historyRef = collection(db, "users", user.uid, "history");
       const historySnapshot = await getDocs(historyRef);
 
-      const deletePromises = historySnapshot.docs.map(docItem => 
+      const deletePromises = historySnapshot.docs.map((docItem) =>
         deleteDoc(doc(db, "users", user.uid, "history", docItem.id))
       );
       await Promise.all(deletePromises);
@@ -69,10 +78,13 @@ const ProfilePage = () => {
   if (!user) {
     return (
       <div className="max-w-2xl mx-auto p-6 mt-44 flex flex-col justify-center items-center">
-        <p className="text-gray-700 text-lg font-normal text-center">Please log in to view your profile and watch history.</p>
-        <button 
+        <p className="text-gray-700 text-lg font-normal text-center">
+          Please log in to view your profile and watch history.
+        </p>
+        <button
           onClick={() => navigate("/login")}
-          className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+          className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+        >
           Go to Login
         </button>
       </div>
@@ -80,29 +92,31 @@ const ProfilePage = () => {
   }
 
   return (
-    <div className="max-w-2xl mx-auto p-6 mt-44 flex flex-col justify-center items-center max-sm:p-3">
-      <h1 className="text-6xl font-normal overflow-hidden text-gray-800 max-sm:text-4xl ">Welcome, {user.name || "User"}!</h1>
-      <h2 className="text-xl font-semibold mt-4 text-gray-700">Watch History</h2>
+    <div className="max-w-6xl mx-auto p-6 mt-44 flex flex-col items-center">
+      <h1 className="text-6xl font-normal text-gray-800 max-sm:text-4xl overflow-hidden">
+        Welcome, {user.name || "User"}!
+      </h1>
+      <h2 className="text-xl font-semibold mt-4 text-gray-700 ">Watch History</h2>
+
       {history.length > 0 ? (
-        <ul className="mt-2">
-          {history.map(video => (
-            <li key={video.id} className="border-b py-2">
-              <a href={`https://www.youtube.com/watch?v=${video.videoId}`} 
-                 target="_blank" 
-                 rel="noopener noreferrer" 
-                 className="text-blue-600 hover:underline">
-                {video.title}
-              </a>
-            </li>
-          ))}
-        </ul>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 mt-6">
+          {history.map((video) =>
+            video?.videoId && video?.title ? (
+              <VideoCard key={video.id} video={video} />
+            ) : (
+              <p key={video.id} className="text-red-500">Invalid video data</p>
+            )
+          )}
+        </div>
       ) : (
         <p className="text-gray-500 mt-2">No watch history yet.</p>
       )}
+
       {history.length > 0 && (
-        <button 
-          onClick={clearHistory} 
-          className="mt-4 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
+        <button
+          onClick={clearHistory}
+          className="mt-6 bg-red-500 text-white px-6 py-3 rounded-lg shadow-md hover:bg-red-600"
+        >
           Clear History
         </button>
       )}

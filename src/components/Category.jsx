@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
-import { FaThumbsUp } from "react-icons/fa";
 import { getAuth } from "firebase/auth";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "../firebase"; 
+import VideoCard from "./VideoCard";// Import the reusable component
 
-const API_KEY = import.meta.env.VITE_YOUTUBE_API_KEY; 
+const API_KEY = import.meta.env.VITE_YOUTUBE_API_KEY;
 
 const categories = {
   "All Videos": "advance educational videos",
@@ -76,8 +76,6 @@ export default function CategoryPage() {
       return;
     }
   
-    console.log(`Saving video to history: ${video.title} (ID: ${video.id})`);
-  
     try {
       const historyRef = collection(db, "users", user.uid, "history");
       await addDoc(historyRef, {
@@ -85,22 +83,18 @@ export default function CategoryPage() {
         videoId: video.id,
         watchedAt: serverTimestamp(),
       });
-  
       console.log(`✅ Successfully saved: ${video.title}`);
     } catch (error) {
       console.error("❌ Error saving video to history:", error);
     }
   };
-  
 
   return (
     <div className="py-16 pt-48 max-w-6xl mx-auto px-4">
-      {/* Page Title */}
       <h1 className="text-4xl font-medium text-gray-900 text-center mb-16 overflow-hidden">
         Explore Educational Videos
       </h1>
 
-      {/* Category Buttons */}
       <div className="flex flex-wrap justify-center gap-4 mb-10">
         {Object.keys(categories).map((category) => (
           <button
@@ -120,49 +114,12 @@ export default function CategoryPage() {
       {/* Video Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
         {filteredVideos.slice(0, visibleCount).map((video) => (
-          <div
+          <VideoCard
             key={video.id}
-            className="relative bg-white rounded-xl shadow-lg overflow-hidden transition duration-300 transform hover:scale-105 hover:shadow-xl backdrop-blur-md bg-opacity-70 border border-gray-200"
-          >
-            {/* Video */}
-            <div className="relative">
-              <a
-                href={`https://www.youtube.com/watch?v=${video.id}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => handleVideoClick(video)}
-              >
-                <iframe
-                  className="w-full h-52 rounded-t-xl"
-                  src={`https://www.youtube.com/embed/${video.id}`}
-                  title={video.title}
-                  allowFullScreen
-                ></iframe>
-              </a>
-              <div className="absolute top-2 right-2 bg-black/60 text-white text-xs px-3 py-1 rounded-md shadow-md">
-                HD
-              </div>
-            </div>
-
-            {/* Card Content with Fixed Height */}
-            <div className="p-5 pb-16 relative">
-              <h3 className="text-lg font-semibold text-gray-900 leading-tight h-12 overflow-hidden mb-6">
-                {video.title.length > 60
-                  ? video.title.substring(0, 57) + "..."
-                  : video.title}
-              </h3>
-
-              {/* Like Button Positioned Absolutely */}
-              <div className="absolute bottom-4 left-5">
-                <button
-                  className="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-full shadow-md transition hover:bg-blue-600 hover:scale-105"
-                >
-                  <FaThumbsUp className="text-lg" />
-                  {videoStats[video.id]?.likes?.toLocaleString() || "0"}
-                </button>
-              </div>
-            </div>
-          </div>
+            video={video}
+            videoStats={videoStats}
+            handleVideoClick={handleVideoClick}
+          />
         ))}
       </div>
 
