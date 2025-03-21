@@ -99,7 +99,7 @@ const ProfilePage = () => {
       <h2 className="text-xl font-semibold mt-4 text-gray-700 ">Watch History</h2>
 
       {history.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 mt-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 mt-6 p-5">
           {history.map((video) =>
             video?.videoId && video?.title ? (
               <VideoCard key={video.id} video={video} />
