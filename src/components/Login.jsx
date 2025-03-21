@@ -31,7 +31,7 @@ const Login = () => {
       toast.success("Login successful! 🎉");
       navigate("/home"); // Redirect after successful login
     } catch (err) {
-      toast.error(err.message);
+      toast.error('error logging in');
     }
   
     setLoading(false);

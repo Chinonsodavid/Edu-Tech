@@ -12,30 +12,30 @@ const VideoCard = ({ video, videoStats = {}, handleVideoClick = () => {} }) => {
     >
       {/* Video */}
       <div className="relative">
-        <a
-          href={`https://www.youtube.com/watch?v=${video.id}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          onClick={(e) => {
-            e.preventDefault(); // Prevents default link behavior
-            handleVideoClick(video);
-          }}
-        >
-          <iframe
-            className="w-full h-52 rounded-t-xl"
-            src={`https://www.youtube.com/embed/${video.id}`}
-            title={video.title}
-            allowFullScreen
-          ></iframe>
-        </a>
+        <iframe
+          className="w-full h-52 rounded-t-xl"
+          src={`https://www.youtube.com/embed/${video.id}`}
+          title={video.title}
+          allowFullScreen
+        ></iframe>
+
+        {/* Partial Click Overlay - Only covers top half */}
+        <div
+          className="absolute top-0 left-0 w-full h-1/2 bg-transparent cursor-pointer"
+          onClick={() => handleVideoClick(video)}
+        ></div>
+
         <div className="absolute top-2 right-2 bg-black/60 text-white text-xs px-3 py-1 rounded-md shadow-md">
           HD
         </div>
       </div>
 
-      {/* Card Content with Fixed Height */}
+      {/* Card Content with Clickable Title */}
       <div className="p-5 pb-16 relative">
-        <h3 className="text-lg font-semibold text-gray-900 leading-tight h-12 overflow-hidden mb-6">
+        <h3
+          className="text-lg font-semibold text-gray-900 leading-tight h-12 overflow-hidden mb-6 cursor-pointer"
+          onClick={() => handleVideoClick(video)}
+        >
           {video.title.length > 60 ? video.title.substring(0, 57) + "..." : video.title}
         </h3>
 

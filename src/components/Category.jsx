@@ -95,7 +95,7 @@ export default function CategoryPage() {
         Explore Educational Videos
       </h1>
 
-      <div className="flex flex-wrap justify-center gap-4 mb-10">
+      <div className="flex flex-wrap justify-center gap-2 mb-10 max-sm:gap-4 ">
         {Object.keys(categories).map((category) => (
           <button
             key={category}
@@ -112,7 +112,7 @@ export default function CategoryPage() {
       </div>
 
       {/* Video Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 p-5">
         {filteredVideos.slice(0, visibleCount).map((video) => (
           <VideoCard
             key={video.id}
