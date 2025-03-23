@@ -1,10 +1,24 @@
 import { FaThumbsUp } from "react-icons/fa";
+import { useState } from "react";
 
 const VideoCard = ({ video, videoStats = {}, handleVideoClick = () => {} }) => {
+  const [history, setHistory] = useState([]);
+
   // Ensure video has valid data
   if (!video || !video.id || !video.title) {
     return <p className="text-red-500">Invalid video data</p>;
   }
+
+  // Handle video click and manage history
+  const onVideoClick = (clickedVideo) => {
+    setHistory((prevHistory) => {
+      // Remove the video if it's already in history
+      const updatedHistory = prevHistory.filter((v) => v.id !== clickedVideo.id);
+      return [...updatedHistory, clickedVideo]; // Add the new video at the end
+    });
+
+    handleVideoClick(clickedVideo);
+  };
 
   return (
     <div
@@ -13,17 +27,12 @@ const VideoCard = ({ video, videoStats = {}, handleVideoClick = () => {} }) => {
       {/* Video */}
       <div className="relative">
         <iframe
-          className="w-full h-52 rounded-t-xl"
+          className="w-full h-52 rounded-t-xl cursor-pointer"
           src={`https://www.youtube.com/embed/${video.id}`}
           title={video.title}
           allowFullScreen
+          onClick={() => onVideoClick(video)} // Clicking the video triggers the event
         ></iframe>
-
-        {/* Partial Click Overlay - Only covers top half */}
-        <div
-          className="absolute top-0 left-0 w-full h-1/2 bg-transparent cursor-pointer"
-          onClick={() => handleVideoClick(video)}
-        ></div>
 
         <div className="absolute top-2 right-2 bg-black/60 text-white text-xs px-3 py-1 rounded-md shadow-md">
           HD
@@ -32,10 +41,7 @@ const VideoCard = ({ video, videoStats = {}, handleVideoClick = () => {} }) => {
 
       {/* Card Content with Clickable Title */}
       <div className="p-5 pb-16 relative">
-        <h3
-          className="text-lg font-semibold text-gray-900 leading-tight h-12 overflow-hidden mb-6 cursor-pointer"
-          onClick={() => handleVideoClick(video)}
-        >
+        <h3 className="text-lg font-semibold text-gray-900 leading-tight h-12 overflow-hidden mb-6">
           {video.title.length > 60 ? video.title.substring(0, 57) + "..." : video.title}
         </h3>
 
