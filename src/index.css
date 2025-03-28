@@ -1,3 +1,4 @@
+@import url("https://cdn.jsdelivr.net/npm/@mdi/font/css/materialdesignicons.min.css");
 
 * {
   margin: 0;
@@ -8,7 +9,9 @@
 body{
   background-color: #f9fafb;
 }
-
+.foot{
+  background-color: #f9fafb;
+}
 .Blackdiv-But{
   padding: 5px 15px;
   border: 1px solid white;
@@ -63,4 +66,8 @@ body{
   .Hero-button2{
     width: 100%;
   }
+}
+.texts{
+color:#5c5d5d;
+font-size: 17px
 }
