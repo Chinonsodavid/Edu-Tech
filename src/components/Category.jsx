@@ -158,7 +158,8 @@ export default function CategoryPage() {
                                     <button
                                       onClick={() => {
                                         setSelectedSubject(subject);
-                                        setIsMobileMenuOpen(false); // Close mobile menu when selecting a subject
+                                        setIsMobileMenuOpen(false); 
+                                          window.scrollTo({ top: 0, behavior: "smooth" }); // Scroll to top smoothly
                                       }}
                                       className="menu-link block px-6 py-2 text-gray-500 hover:bg-gray-300 rounded text-left w-full"
                                     >
