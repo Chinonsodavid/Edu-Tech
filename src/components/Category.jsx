@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import courses from "./coursesData"; // Import courses data
 import VideoCard from "./VideoCard";
 import { FaBars } from "react-icons/fa"; // Import menu icon
+import { educationalKeywords } from "./searchkeyword";
 
 const API_KEY = import.meta.env.VITE_YOUTUBE_API_KEY;
 
@@ -57,34 +58,46 @@ export default function CategoryPage() {
     }
   };
 
-  const handleSearch = (event) => {
+  const handleSearch = async (event) => {
     const term = event.target.value.toLowerCase();
     setSearchTerm(term);
-
-    const educationalKeywords = [
-      "math",
-      "science",
-      "history",
-      "education",
-      "learning",
-      "tutorial",
-      "lesson",
-      "knowledge",
-    ];
+  
     const isEducational = educationalKeywords.some((keyword) =>
       term.includes(keyword)
     );
-
+  
     if (term === "" || isEducational) {
       const filtered = videos.filter((video) =>
         video.title.toLowerCase().includes(term)
       );
-      setFilteredVideos(filtered);
+  
+      if (filtered.length > 0) {
+        setFilteredVideos(filtered);
+      } else {
+        // If no results found locally, fetch new videos from YouTube
+        try {
+          const response = await fetch(
+            `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=20&q=${term}&type=video&key=${API_KEY}`
+          );
+          const data = await response.json();
+          const newVideos = data.items.map((item) => ({
+            id: item.id.videoId,
+            title: item.snippet.title,
+            thumbnail: item.snippet.thumbnails.medium.url,
+          }));
+  
+          setVideos(newVideos);
+          setFilteredVideos(newVideos);
+          fetchVideoStats(newVideos);
+        } catch (error) {
+          console.error("Error fetching new videos:", error);
+        }
+      }
     } else {
       setFilteredVideos([]); // Show "No videos available" for non-educational searches
     }
   };
-
+  
   return (
     <div className="flex">
       {/* Mobile Menu Button */}
@@ -158,8 +171,11 @@ export default function CategoryPage() {
                                     <button
                                       onClick={() => {
                                         setSelectedSubject(subject);
-                                        setIsMobileMenuOpen(false); 
-                                          window.scrollTo({ top: 0, behavior: "smooth" }); // Scroll to top smoothly
+                                        setIsMobileMenuOpen(false);
+                                        window.scrollTo({
+                                          top: 0,
+                                          behavior: "smooth",
+                                        }); // Scroll to top smoothly
                                       }}
                                       className="menu-link block px-6 py-2 text-gray-500 hover:bg-gray-300 rounded text-left w-full"
                                     >

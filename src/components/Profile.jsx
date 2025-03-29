@@ -30,14 +30,21 @@ const ProfilePage = () => {
   const fetchWatchHistory = async (uid) => {
     try {
       const historyRef = collection(db, "users", uid, "history");
+      console.log("Fetching from:", `users/${uid}/history`); // Log the exact Firestore path
+  
       const historySnapshot = await getDocs(historyRef);
+  
+      if (historySnapshot.empty) {
+        console.log("No history found in Firestore");
+      }
+  
       const historyData = historySnapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       }));
-
+  
       console.log("Fetched History:", historyData); // Debugging log
-
+  
       setHistory(historyData);
     } catch (error) {
       console.error("Error fetching history:", error);
@@ -46,6 +53,7 @@ const ProfilePage = () => {
       setLoading(false);
     }
   };
+  
 
   const clearHistory = async () => {
     if (!user) return;
@@ -102,7 +110,7 @@ const ProfilePage = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 mt-6 p-5">
           {history.map((video) =>
             video?.videoId && video?.title ? (
-              <VideoCard key={video.id} video={video} />
+              <VideoCard key={video.id} video={video} videoStats={{}} handleVideoClick={() => {}} />
             ) : (
               <p key={video.id} className="text-red-500">Invalid video data</p>
             )
