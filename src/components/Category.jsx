@@ -110,7 +110,7 @@ export default function CategoryPage() {
   return (
     <div className="flex flex-col lg:flex-row">
       {/* Mobile Menu Button */}
-      <div className="lg:hidden fixed top-[19%] left-4 z-50"> {/* top-20 for more space below navbar */}
+      <div className="lg:hidden fixed top-[18%] left-4 z-50"> {/* top-20 for more space below navbar */}
         <button
           onClick={() => setIsMobileMenuOpen(true)}
           className="text-gray-700 bg-white p-3 rounded-full  border border-gray-300 hover:bg-gray-100 transition"
@@ -302,7 +302,7 @@ export default function CategoryPage() {
             value={searchTerm}
             onChange={handleSearch}
             placeholder="Search videos..."
-            className="border px-4 py-2 rounded-md w-full max-w-xs"
+            className="border mt-6 px-4 py-2 rounded-md w-full max-w-xs"
           />
         </div>
 
