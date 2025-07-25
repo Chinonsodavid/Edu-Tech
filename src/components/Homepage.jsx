@@ -28,7 +28,7 @@ function Homepage() {
           <p className="text-3xl overflow-y-hidden font-medium max-sm:text-[27px]">Learn Courses For Free</p>
         </div>
 
-        <div className="w-full grid grid-cols-4 gap-4 max-[414px]:grid-cols-1 mb-8">
+        <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 mb-8">
           <div className="flex flex-col gap-3 text-center justify-center items-center">
             <img src="\img\Maths.png" alt="" className="w-12" />
             <p>Mathematics</p>
@@ -88,7 +88,7 @@ function Homepage() {
           What subscribers are achieving through learning
         </p>
 
-        <div className="w-full grid grid-cols-3 gap-3 max-[414px]:grid-cols-1">
+        <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
           <div className="w-full mt-6  border flex flex-col border-black-300 p-4 gap-4">
             <div className="flex  flex-row">
               <img src="\img\profile.png" alt="" className="prof" />
@@ -133,8 +133,6 @@ function Homepage() {
         </p>
         <button className="Hero-button2 mt-3">Start Learning today</button>
       </div>
-
-
     </>
   );
 }
