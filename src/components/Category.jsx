@@ -110,33 +110,118 @@ export default function CategoryPage() {
   return (
     <div className="flex flex-col lg:flex-row">
       {/* Mobile Menu Button */}
-      <div className="lg:hidden fixed top-6 left-6 z-50">
+      <div className="lg:hidden fixed top-[19%] left-4 z-50"> {/* top-20 for more space below navbar */}
         <button
           onClick={() => setIsMobileMenuOpen(true)}
-          className="text-gray-700 bg-white p-2 rounded shadow"
+          className="text-gray-700 bg-white p-3 rounded-full  border border-gray-300 hover:bg-gray-100 transition"
         >
           <FaBars className="text-2xl" />
         </button>
       </div>
 
-      {/* Sidebar */}
-      <div
-        className={`fixed top-0 left-0 w-64 h-full bg-white border-r z-40 transition-transform duration-300
-        ${isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"}
-        lg:translate-x-0 lg:relative lg:h-screen lg:mt-28`}
-      >
-        {/* Close Button on Mobile */}
-        <div className="flex flex-row justify-between border-b">
-          <div className="p-5 text-3xl font-thin">Courses</div>
-          <div className="lg:hidden flex justify-end p-3">
+      {/* Mobile Sidebar Overlay */}
+      {isMobileMenuOpen && (
+        <div className="fixed inset-0 z-50 bg-black bg-opacity-40 flex">
+          <div className="relative w-4/5 max-w-xs bg-white h-full shadow-lg animate-slide-in">
             <button
               onClick={() => setIsMobileMenuOpen(false)}
-              className="text-gray-500 text-3xl"
+              className="absolute top-4 right-4 text-gray-700 text-3xl font-bold"
+              aria-label="Close menu"
             >
               &times;
             </button>
+            <div className="p-5 text-3xl font-thin border-b">Courses</div>
+            <div className="flex-1 overflow-y-auto px-5 mt-6">
+              <ul className="flex flex-col gap-6">
+                {courses.map((course) => (
+                  <li key={course.name} className="menu-item">
+                    <button
+                      onClick={() =>
+                        setOpenDropdown(
+                          openDropdown === course.name ? null : course.name
+                        )
+                      }
+                      className="menu-link w-full flex justify-between items-center"
+                    >
+                      <span>{course.name}</span>
+                      <i
+                        className={`mdi mdi-chevron-${
+                          openDropdown === course.name ? "up" : "down"
+                        } transition`}
+                      ></i>
+                    </button>
+                    {openDropdown === course.name && (
+                      <ul className="ml-6 mt-2 flex flex-col gap-2 text-[15px]">
+                        {Object.entries(course.subjects).map(
+                          ([level, subjects]) => (
+                            <li key={level}>
+                              <button
+                                onClick={() =>
+                                  setOpenSubDropdown(
+                                    openSubDropdown === level ? null : level
+                                  )
+                                }
+                                className="menu-link w-full flex justify-between items-center px-4 py-2 text-gray-600 hover:bg-gray-200 rounded"
+                              >
+                                {level}
+                                <i
+                                  className={`mdi mdi-chevron-${
+                                    openSubDropdown === level ? "up" : "down"
+                                  } transition`}
+                                ></i>
+                              </button>
+                              {openSubDropdown === level && (
+                                <ul className="ml-4 mt-2 flex flex-col gap-1 text-[13px]">
+                                  {subjects.map((subject) => (
+                                    <li key={subject}>
+                                      <button
+                                        onClick={() => {
+                                          setSelectedSubject(subject);
+                                          setIsMobileMenuOpen(false);
+                                          window.scrollTo({
+                                            top: 0,
+                                            behavior: "smooth",
+                                          });
+                                        }}
+                                        className="menu-link block px-6 py-2 text-gray-500 hover:bg-gray-300 rounded text-left w-full"
+                                      >
+                                        {subject}
+                                      </button>
+                                    </li>
+                                  ))}
+                                </ul>
+                              )}
+                            </li>
+                          )
+                        )}
+                      </ul>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
+          {/* Prevent background scroll */}
+          <style>{`
+            body {
+              overflow: hidden;
+            }
+            .animate-slide-in {
+              animation: slideInSidebar 0.3s ease;
+            }
+            @keyframes slideInSidebar {
+              from { transform: translateX(-100%); opacity: 0; }
+              to { transform: translateX(0); opacity: 1; }
+            }
+          `}</style>
         </div>
+      )}
+
+      {/* Sidebar for desktop */}
+      <div
+        className={`hidden lg:block fixed top-0 left-0 w-64 h-full bg-white border-r z-40 lg:relative lg:h-screen lg:mt-28`}
+      >
+        {/* Close Button on Mobile removed from here */}
         <div className="flex-1 overflow-y-auto px-5 mt-6">
           <ul className="flex flex-col gap-6">
             {courses.map((course) => (
@@ -183,7 +268,6 @@ export default function CategoryPage() {
                                   <button
                                     onClick={() => {
                                       setSelectedSubject(subject);
-                                      setIsMobileMenuOpen(false);
                                       window.scrollTo({
                                         top: 0,
                                         behavior: "smooth",
@@ -209,8 +293,8 @@ export default function CategoryPage() {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 lg:ml-64 pt-24 md:pt-48 px-4 md:px-8 overflow-y-auto">
-        {/* Subject title and search bar */}
+      <div className="flex-1 lg:ml-64 pt-36 md:pt-56 px-4 md:px-8 overflow-y-auto">
+        {/* Increased pt-24 to pt-36 and md:pt-48 to md:pt-56 for more space below navbar */}
         <div className="flex flex-col md:flex-row justify-between items-center mb-6 gap-3">
           <h2 className="text-2xl font-normal">{selectedSubject}</h2>
           <input
